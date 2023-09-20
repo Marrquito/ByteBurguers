@@ -11,7 +11,7 @@ directory   = os.path.dirname(__file__)
 logger      = logging.getLogger("ByteBurgers")
 
 #Configure log system:
-if PRINT_LOG == "terminal":
+if PRINT_LOG == "TERMINAL":
     log_handler = logging.StreamHandler()
     logger.setLevel(logging.INFO)
 
@@ -38,6 +38,13 @@ else:
 app = FastAPI()
 
 
+@app.on_event("startup")
+async def startup_event():
+    logger.info("***********************************************************")
+    logger.info("*************** SEJA BEM-VINDO A BYTE BURGER **************")
+    logger.info("***********************************************************")
+
+
 @app.get("/")
 async def root():
-    return {"message": "Hello World"}
+    return {"appName": "Byte Burgers"}
