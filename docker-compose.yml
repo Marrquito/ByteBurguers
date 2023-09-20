@@ -1,0 +1,22 @@
+services:
+
+  db:
+    image: postgres:15
+    container_name: byte_burgers
+    volumes:
+      - byte-burgers_data:/var/lib/postgresql/data
+    ports:
+      - "5532:5432"
+    environment:
+      - POSTGRES_USER=byte_burgers
+      - POSTGRES_PASSWORD=udacaduc123!
+      - POSTGRES_DB=byte_burgers
+    restart: always
+
+networks:
+  default:
+    name: byte-burgers-network
+
+volumes:
+  byte-burgers_data:
+    name: byte-burgers_data
