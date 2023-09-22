@@ -6,6 +6,7 @@ from pythonjsonlogger   import jsonlogger
 from fastapi            import FastAPI
 
 from config             import *
+from router             import router
 
 directory   = os.path.dirname(__file__)
 logger      = logging.getLogger("ByteBurgers")
@@ -37,7 +38,6 @@ else:
 
 app = FastAPI()
 
-
 @app.on_event("startup")
 async def startup_event():
     logger.info("***********************************************************")
@@ -48,3 +48,5 @@ async def startup_event():
 @app.get("/")
 async def root():
     return {"appName": "Byte Burgers"}
+
+app.include_router(router, prefix="")
