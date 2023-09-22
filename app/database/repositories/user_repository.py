@@ -45,7 +45,6 @@ class UserRepository:
         try:
             userDb = UserDBModel(**user.model_dump())
            
-            
             db.add(userDb)
             db.commit()
             db.refresh(userDb)
@@ -83,7 +82,7 @@ class UserRepository:
         
         return user
 
-    def update(self, id: int, user: UserRequestModel) -> UserResponseModel:
+    def update(self, user: UserRequestModel) -> UserResponseModel:
         logger.debug("[IN ]")
         
         db_generator = get_db()
@@ -107,3 +106,31 @@ class UserRepository:
         logger.debug(f"[OUT] - {updatedUser}")
         
         return updatedUser
+
+    def delete(self, id: int) -> bool:
+        logger.debug("[IN ]")
+        
+        db_generator = get_db()
+        db: Session  = next(db_generator)
+        
+        result = False
+        
+        try:
+            user: UserResponseModel = db.query(UserDBModel).get(id)
+            
+            if user is not None:
+                db.delete(user)
+                db.commit()
+                result = True
+                
+
+        except Exception as e:
+            db.rollback()
+            
+            logger.error(f"[ERR] List User DB error - {e}")
+            
+            raise e
+            
+        logger.debug(f"[OUT] - {result}")
+        
+        return result

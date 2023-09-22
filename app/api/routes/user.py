@@ -1,4 +1,4 @@
-from fastapi    import APIRouter, HTTPException, status
+from fastapi    import APIRouter, HTTPException, Response, status
 from typing     import List
 
 from api.response.user      import UserResponseModel
@@ -53,3 +53,16 @@ def userUpdate(id: int, user: UserRequestModel) -> UserResponseModel:
         )
     
     return user
+
+@router.delete("/{id}", status_code=status.HTTP_200_OK)
+def userDelete(id: int):
+    controller = UserController()
+    
+    result = controller.deleteUser(id)
+    
+    if not result:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="User not found"
+        )
+    
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
