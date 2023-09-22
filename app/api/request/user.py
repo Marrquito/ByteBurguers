@@ -1,11 +1,11 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
-class UserResponseModel(BaseModel):
+class UserRequestModel(BaseModel):
     name        : str
-    lastName    : str
+    last_name   : str
     email       : str
-    password    : str
+    password    : str | None
     phone       : str
 
     class Config:
-        orm_mode = True
+        from_attributes = True

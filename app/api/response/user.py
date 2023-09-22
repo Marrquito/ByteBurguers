@@ -3,9 +3,9 @@ from pydantic import BaseModel
 class UserResponseModel(BaseModel):
     id          : int
     name        : str
-    lastName    : str
+    last_name   : str
     email       : str
     phone       : str
 
     class Config:
-        orm_mode = True
+        from_attributes = True

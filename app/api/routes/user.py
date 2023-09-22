@@ -1,15 +1,15 @@
-from fastapi    import APIRouter
+from fastapi    import APIRouter, HTTPException, status
 from typing     import List
 
 from api.response.user      import UserResponseModel
+from api.request.user       import UserRequestModel
 from api.controllers.user   import UserController
-
 
 
 router = APIRouter()
 
 
-@router.get("/", response_model=List[UserResponseModel])
+@router.get("/", response_model=List[UserResponseModel], status_code=status.HTTP_200_OK)
 def userList() -> List[UserResponseModel]:
     controller = UserController()
     
@@ -18,4 +18,38 @@ def userList() -> List[UserResponseModel]:
     if not users:
         return []
     
-    return [UserResponseModel(user) for user in users]
+    return users
+
+@router.post("/", response_model=UserResponseModel, status_code=status.HTTP_201_CREATED)
+def userCreate(user: UserRequestModel) -> UserResponseModel:
+    controller = UserController()
+    
+    newUser = controller.createUser(user)
+    
+    return newUser
+
+@router.get("/{id}", response_model=UserResponseModel, status_code=status.HTTP_200_OK)
+def userRead(id: int) -> UserResponseModel:
+    controller = UserController()
+    
+    user = controller.readUser(id)
+    
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="User not found"
+        )
+    
+    return user
+
+@router.put("/{id}", response_model=UserResponseModel, status_code=status.HTTP_200_OK)
+def userUpdate(id: int, user: UserRequestModel) -> UserResponseModel:
+    controller = UserController()
+    
+    user = controller.updateUser(id, user)
+    
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="User not found"
+        )
+    
+    return user
