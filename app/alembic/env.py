@@ -17,10 +17,9 @@ if config.config_file_name is not None:
 # add your model's MetaData object here
 # for 'autogenerate' support
 
-from database.models.cardapio   import CardapioDBModel
-from database.models.user       import UserDBModel
+from database.models    import *
 
-from database.database          import Base
+from database.database  import Base
 
 target_metadata = Base.metadata
 

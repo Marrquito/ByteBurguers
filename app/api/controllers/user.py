@@ -1,8 +1,8 @@
 import logging
 
-from api.response.user      import UserResponseModel
-from api.request.user       import UserRequestModel
-from services.user_service  import UserService
+from api.responses.user      import UserResponseModel
+from api.requests.user       import UserRequestModel
+from services.user_service   import UserService
 
 logger = logging.getLogger("ByteBurgers")
 
@@ -11,12 +11,12 @@ class UserController():
         logger.debug("UserController init")
         
     
-    def listUsers(self) -> list[UserResponseModel]:
+    def listUsers(self, name: str = None) -> list[UserResponseModel]:
         logger.debug("[IN ] ListUsers")
         
         userService = UserService()
         
-        result = userService.list()
+        result      = userService.list(name)
         
         logger.debug(f"[OUT] - {result}")
         
@@ -27,7 +27,7 @@ class UserController():
         
         userService = UserService()
         
-        result = userService.create(user)
+        result      = userService.create(user)
         
         logger.debug(f"[OUT] - {result}")
         
@@ -38,7 +38,7 @@ class UserController():
         
         userService = UserService()
         
-        result = userService.read(id)
+        result      = userService.read(id)
         
         logger.debug(f"[OUT] - {result}")
         
@@ -49,7 +49,7 @@ class UserController():
         
         userService = UserService()
         
-        result = userService.update(id, user)
+        result      = userService.update(id, user)
         
         logger.debug(f"[OUT] - {result}")
         
@@ -60,7 +60,7 @@ class UserController():
         
         userService = UserService()
         
-        result = userService.delete(id)
+        result      = userService.delete(id)
         
         logger.debug(f"[OUT] - {result}")
         

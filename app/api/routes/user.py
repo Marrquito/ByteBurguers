@@ -1,8 +1,8 @@
 from fastapi    import APIRouter, HTTPException, Response, status
 from typing     import List
 
-from api.response.user      import UserResponseModel
-from api.request.user       import UserRequestModel
+from api.responses.user      import UserResponseModel
+from api.requests.user       import UserRequestModel
 from api.controllers.user   import UserController
 
 
@@ -10,10 +10,10 @@ router = APIRouter()
 
 
 @router.get("/", response_model=List[UserResponseModel], status_code=status.HTTP_200_OK)
-def userList() -> List[UserResponseModel]:
-    controller = UserController()
-    
-    users = controller.listUsers()
+def userList(name: str = None) -> List[UserResponseModel]:
+    controller  = UserController()
+
+    users       = controller.listUsers(name)
     
     if not users:
         return []
@@ -22,17 +22,17 @@ def userList() -> List[UserResponseModel]:
 
 @router.post("/", response_model=UserResponseModel, status_code=status.HTTP_201_CREATED)
 def userCreate(user: UserRequestModel) -> UserResponseModel:
-    controller = UserController()
+    controller  = UserController()
     
-    newUser = controller.createUser(user)
+    newUser     = controller.createUser(user)
     
     return newUser
 
 @router.get("/{id}", response_model=UserResponseModel, status_code=status.HTTP_200_OK)
 def userRead(id: int) -> UserResponseModel:
-    controller = UserController()
+    controller  = UserController()
     
-    user = controller.readUser(id)
+    user        = controller.readUser(id)
     
     if not user:
         raise HTTPException(
@@ -43,9 +43,9 @@ def userRead(id: int) -> UserResponseModel:
 
 @router.put("/{id}", response_model=UserResponseModel, status_code=status.HTTP_200_OK)
 def userUpdate(id: int, user: UserRequestModel) -> UserResponseModel:
-    controller = UserController()
+    controller  = UserController()
     
-    user = controller.updateUser(id, user)
+    user        = controller.updateUser(id, user)
     
     if not user:
         raise HTTPException(
@@ -56,9 +56,9 @@ def userUpdate(id: int, user: UserRequestModel) -> UserResponseModel:
 
 @router.delete("/{id}", status_code=status.HTTP_200_OK)
 def userDelete(id: int):
-    controller = UserController()
+    controller  = UserController()
     
-    result = controller.deleteUser(id)
+    result      = controller.deleteUser(id)
     
     if not result:
         raise HTTPException(

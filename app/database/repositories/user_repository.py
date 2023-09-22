@@ -5,8 +5,8 @@ from sqlalchemy.orm import Session
 
 from database.dependencies  import get_db
 from database.models.user   import UserDBModel
-from api.response.user      import UserResponseModel
-from api.request.user       import UserRequestModel
+from api.responses.user     import UserResponseModel
+from api.requests.user      import UserRequestModel
 
 logger = logging.getLogger("ByteBurgers")
 
@@ -14,7 +14,7 @@ class UserRepository:
     def __init__(self):
         logger.debug("UserRepository Init")
         
-    def list(self) -> list[UserResponseModel]:
+    def list(self, name: str = None) -> list[UserResponseModel]:
         logger.debug("[IN ]")
         
         result = None
@@ -22,8 +22,11 @@ class UserRepository:
         try:
             db_generator    = get_db()
             db: Session     = next(db_generator)
-            
-            result = db.query(UserDBModel).all()
+
+            if name: 
+                result = db.query(UserDBModel).filter(UserDBModel.name == name)
+            else:
+                result = db.query(UserDBModel).all()
             
         except Exception as e:
             db.rollback()
@@ -88,7 +91,7 @@ class UserRepository:
         db_generator = get_db()
         db: Session  = next(db_generator)
         
-        updatedUser = None
+        updatedUser  = None
         
         try:
             userDb                          = UserDBModel(**user.model_dump())

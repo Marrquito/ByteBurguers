@@ -2,8 +2,8 @@ import logging
 
 from database.models.user                   import UserDBModel
 from database.repositories.user_repository  import UserRepository
-from api.response.user                      import UserResponseModel
-from api.request.user                       import UserRequestModel
+from api.responses.user                     import UserResponseModel
+from api.requests.user                      import UserRequestModel
 
 logger = logging.getLogger("ByteBurgers")
 
@@ -11,14 +11,14 @@ class UserService:
     def __init__(self):
         logger.debug("User_Service init")
         
-    def list(self) -> list[UserResponseModel]:
+    def list(self, name: str = None) -> list[UserResponseModel]:
         logger.debug("List User service")
         
-        result = []
+        result      = []
         
-        repository = UserRepository()
+        repository  = UserRepository()  
         
-        result = repository.list()
+        result      = repository.list(name)
         
         logger.debug(f"[OUT] - {result}")
         
@@ -27,9 +27,9 @@ class UserService:
     def create(self, user: UserRequestModel) -> UserResponseModel:
         logger.debug("Create User service")
         
-        repository = UserRepository()
+        repository   = UserRepository()
         
-        result = repository.create(user)
+        result       = repository.create(user)
         
         logger.debug(f"[OUT] - {result}")
         
@@ -38,9 +38,9 @@ class UserService:
     def read(self, id: int) -> UserResponseModel:
         logger.debug("Read User service")
         
-        repository = UserRepository()
+        repository  = UserRepository()
         
-        result = repository.read(id)
+        result      = repository.read(id)
         
         logger.debug(f"[OUT] - {result}")
         
@@ -65,9 +65,9 @@ class UserService:
     def delete(self, id: int) -> bool:
         logger.debug("Delete User service")
         
-        repository = UserRepository()
+        repository  = UserRepository()
         
-        result = repository.delete(id)
+        result      = repository.delete(id)
         
         logger.debug(f"[OUT] - {result}")
         

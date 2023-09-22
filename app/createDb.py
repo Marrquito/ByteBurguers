@@ -7,8 +7,7 @@ from pythonjsonlogger       import jsonlogger
 from database.database      import Base, engine
 from config                 import *
 
-from database.models.user       import UserDBModel
-from database.models.cardapio   import CardapioDBModel
+from database.models        import *
 
 directory   = os.path.dirname(__file__)
 logger      = logging.getLogger("ByteBurgers")
