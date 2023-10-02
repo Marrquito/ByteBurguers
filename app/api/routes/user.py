@@ -39,22 +39,26 @@ def userReport() -> List[UserResponseModel]:
     count       = controller.countUsers()
     users       = controller.listUsers()
 
-    dateNow    = datetime.now().strftime("%Y-%m-%d")
+    dateNow     = datetime.now().strftime("%Y-%m-%d")
 
-    reportName = f"report_{dateNow}.txt"
+    reportName  = f"report_{dateNow}.txt"
 
-    with open("relatorios/" + reportName, 'w') as arquivo:
-    # Escreve dados no arquivo
-        arquivo.write('Este é o relatório do dia ' + dateNow + '\n')
-        arquivo.write('Quantidade de usuários: ' + str(count) + '\n')
-        arquivo.write('Usuários:\n'+'id  - name - last_name - email - phone\n')
-        for user in users:
-            arquivo.write(f"{user.id} - {user.name} - {user.last_name} - {user.email} - {user.phone}\n")
-    
-    if not users:
-        return []
-    
-    return users
+    try:
+
+        with open("relatorios/" + reportName, 'w') as arquivo:
+            arquivo.write('Este é o relatório do dia ' + dateNow + '\n')
+            arquivo.write('Quantidade de usuários: ' + str(count) + '\n')
+            arquivo.write('Usuários:\n'+'id  - name - last_name - email - phone\n')
+            for user in users:
+                arquivo.write(f"{user.id} - {user.name} - {user.last_name} - {user.email} - {user.phone}\n")
+
+    except Exception as e:
+        logger.error(e)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error generating report"
+        )
+
+    return "Relatório gerado com sucesso!"
 
 @router.post("/", response_model=UserResponseModel, status_code=status.HTTP_201_CREATED)
 def userCreate(user: UserRequestModel) -> UserResponseModel:
