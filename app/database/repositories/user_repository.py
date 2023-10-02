@@ -39,6 +39,28 @@ class UserRepository:
             
         return result
 
+    def count(self) -> int:
+        logger.debug("[IN ]")
+        
+        result = None
+        
+        try:
+            db_generator    = get_db()
+            db: Session     = next(db_generator)
+            
+            result = db.query(UserDBModel).count()
+            
+        except Exception as e:
+            db.rollback()
+            
+            logger.error(f"[ERR] List User DB error - {e}")
+            
+            raise e
+        
+        logger.debug(f"[OUT] - {result}")
+            
+        return result
+
     def create(self, user: UserRequestModel) -> UserResponseModel:
         logger.debug("[IN ]")
         

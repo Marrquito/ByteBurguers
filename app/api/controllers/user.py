@@ -65,3 +65,14 @@ class UserController():
         logger.debug(f"[OUT] - {result}")
         
         return result
+    
+    def countUsers(self) -> int:
+        logger.debug("[IN ] CountUsers")
+        
+        userService = UserService()
+        
+        result      = userService.count()
+        
+        logger.debug(f"[OUT] - {result}")
+        
+        return result

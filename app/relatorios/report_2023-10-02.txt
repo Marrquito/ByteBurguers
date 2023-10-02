@@ -1,0 +1,5 @@
+Este é o relatório do dia 2023-10-02
+Quantidade de usuários: 1
+Usuários:
+id  - name - last_name - email - phone
+1 - luiz augusto - landim - luizaugustogml@gmail.com - 88988858085

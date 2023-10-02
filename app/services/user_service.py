@@ -73,4 +73,13 @@ class UserService:
         
         return result
         
+    def count(self) -> int:
+        logger.debug("Count User service")
         
+        repository  = UserRepository()
+        
+        result      = repository.count()
+        
+        logger.debug(f"[OUT] - {result}")
+        
+        return result
