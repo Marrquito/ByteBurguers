@@ -1,0 +1,10 @@
+Este é o relatório do dia 2023-10-05
+Quantidade de usuários: 6
+Usuários:
+id  - name - last_name - email - phone
+3 - marco - cossetim - marcocoss@gmail.com - 11988454545
+4 - ana - miranda - anamirr@gmail.com - 119884545
+5 - joao - candido - joaocand@gmail.com - 83976543210
+6 - Monkey D - Luffy - kingofpirates@gmail.com - 88987654321
+1 - zoro - roronoa - adrcic@outlook.com.br - 83945677475
+7 - marcelo - iury - adrcic@outlook.com.br - 83945677475

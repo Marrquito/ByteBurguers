@@ -13,7 +13,7 @@ router = APIRouter()
 
 logger          = logging.getLogger("ByteBurgers")
 
-@router.get("/", response_model=List[UserResponseModel], status_code=status.HTTP_200_OK)
+@router.get("/read_all", response_model=List[UserResponseModel], status_code=status.HTTP_200_OK)
 def userList(name: str = None) -> List[UserResponseModel]:
     controller  = UserController()
 
@@ -24,13 +24,52 @@ def userList(name: str = None) -> List[UserResponseModel]:
     
     return users
 
-@router.post("/", response_model=UserResponseModel, status_code=status.HTTP_201_CREATED)
+@router.post("/create", response_model=UserResponseModel, status_code=status.HTTP_201_CREATED)
 def userCreate(user: UserRequestModel) -> UserResponseModel:
     controller  = UserController()
     
     newUser     = controller.createUser(user)
     
     return newUser
+
+@router.get("/read/{id}", response_model=UserResponseModel, status_code=status.HTTP_200_OK)
+def userRead(id: int) -> UserResponseModel:
+    controller  = UserController()
+    
+    user        = controller.readUser(id)
+    
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="User not found"
+        )
+    
+    return user
+
+@router.put("/update/{id}", response_model=UserResponseModel, status_code=status.HTTP_200_OK)
+def userUpdate(id: int, user: UserUpdateRequestModel) -> UserResponseModel:
+    controller  = UserController()
+    
+    updateUser  = controller.updateUser(id, user)
+    
+    if not updateUser:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="User not found"
+        )
+    
+    return updateUser
+
+@router.delete("/delete/{id}", status_code=status.HTTP_200_OK)
+def userDelete(id: int):
+    controller  = UserController()
+    
+    result      = controller.deleteUser(id)
+    
+    if not result:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="User not found"
+        )
+    
+    return result
 
 @router.get("/count", response_model=int, status_code=status.HTTP_200_OK)
 def userCount() -> int:
@@ -67,42 +106,3 @@ def userReport() -> List[UserResponseModel]:
         )
 
     return users
-
-@router.get("/{id}", response_model=UserResponseModel, status_code=status.HTTP_200_OK)
-def userRead(id: int) -> UserResponseModel:
-    controller  = UserController()
-    
-    user        = controller.readUser(id)
-    
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="User not found"
-        )
-    
-    return user
-
-@router.put("/{id}", response_model=UserResponseModel, status_code=status.HTTP_200_OK)
-def userUpdate(id: int, user: UserUpdateRequestModel) -> UserResponseModel:
-    controller  = UserController()
-    
-    updateUser  = controller.updateUser(id, user)
-    
-    if not updateUser:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="User not found"
-        )
-    
-    return updateUser
-
-@router.delete("/{id}", status_code=status.HTTP_200_OK)
-def userDelete(id: int):
-    controller  = UserController()
-    
-    result      = controller.deleteUser(id)
-    
-    if not result:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="User not found"
-        )
-    
-    return Response(status_code=status.HTTP_204_NO_CONTENT)
