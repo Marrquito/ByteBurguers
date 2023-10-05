@@ -58,7 +58,7 @@ def userReport() -> List[UserResponseModel]:
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Error generating report"
         )
 
-    return "Relatório gerado com sucesso!"
+    return users
 
 @router.post("/", response_model=UserResponseModel, status_code=status.HTTP_201_CREATED)
 def userCreate(user: UserRequestModel) -> UserResponseModel:
@@ -85,14 +85,16 @@ def userRead(id: int) -> UserResponseModel:
 def userUpdate(id: int, user: UserRequestModel) -> UserResponseModel:
     controller  = UserController()
     
-    user        = controller.updateUser(id, user)
+    updateUser  = controller.updateUser(id, user)
     
-    if not user:
+    if not updateUser:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="User not found"
         )
     
-    return user
+    return updateUser
+
+
 
 @router.delete("/{id}", status_code=status.HTTP_200_OK)
 def userDelete(id: int):
