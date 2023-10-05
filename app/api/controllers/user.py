@@ -1,7 +1,7 @@
 import logging
 
 from api.responses.user      import UserResponseModel
-from api.requests.user       import UserRequestModel
+from api.requests.user       import *
 from services.user_service   import UserService
 
 logger = logging.getLogger("ByteBurgers")
@@ -34,7 +34,7 @@ class UserController():
         return result
 
     def readUser(self, id: int) -> UserResponseModel:
-        logger.debug("[IN ] ReadUsers")
+        logger.debug(f"[IN ] ReadUsers {id}")
         
         userService = UserService()
         
@@ -44,7 +44,7 @@ class UserController():
         
         return result
  
-    def updateUser(self, id: int, user: UserRequestModel) -> UserResponseModel:
+    def updateUser(self, id: int, user: UserUpdateRequestModel) -> UserResponseModel:
         logger.debug("[IN ] UpdateUsers")
         
         userService = UserService()

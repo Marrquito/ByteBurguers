@@ -53,7 +53,7 @@ class UserRepository:
         except Exception as e:
             db.rollback()
             
-            logger.error(f"[ERR] List User DB error - {e}")
+            logger.error(f"[ERR] Count User DB error - {e}")
             
             raise e
         
@@ -77,7 +77,7 @@ class UserRepository:
         except Exception as e:
             db.rollback()
             
-            logger.error(f"[ERR] List User DB error - {e}")
+            logger.error(f"[ERR] Create User DB error - {e}")
             
             raise e
             
@@ -86,7 +86,7 @@ class UserRepository:
         return UserResponseModel(**userDb.__dict__)
 
     def read(self, id: int) -> UserResponseModel:
-        logger.debug("[IN ]")
+        logger.debug(f"[IN ] ID={id}")
         
         user = None
         
@@ -99,7 +99,7 @@ class UserRepository:
         except Exception as e:
             db.rollback()
             
-            logger.error(f"[ERR] List User DB error - {e}")
+            logger.error(f"[ERR] Read User DB error - {e}")
             
             raise e
             
@@ -107,7 +107,7 @@ class UserRepository:
         
         return user
 
-    def update(self, user: UserRequestModel) -> UserResponseModel:
+    def update(self, user: UserDBModel) -> UserResponseModel:
         logger.debug("[IN ]")
         
         db_generator = get_db()
@@ -116,15 +116,14 @@ class UserRepository:
         updatedUser  = None
         
         try:
-            userDb                          = UserDBModel(**user.model_dump())
-            updatedUser: UserResponseModel  = db.merge(userDb)
+            updatedUser: UserResponseModel  = db.merge(user)
             
             db.commit()
 
         except Exception as e:
             db.rollback()
             
-            logger.error(f"[ERR] List User DB error - {e}")
+            logger.error(f"[ERR] Update User DB error - {e}")
             
             raise e
             
@@ -152,7 +151,7 @@ class UserRepository:
         except Exception as e:
             db.rollback()
             
-            logger.error(f"[ERR] List User DB error - {e}")
+            logger.error(f"[ERR] Delete User DB error - {e}")
             
             raise e
             

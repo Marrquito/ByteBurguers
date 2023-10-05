@@ -3,7 +3,7 @@ import logging
 from database.models.user                   import UserDBModel
 from database.repositories.user_repository  import UserRepository
 from api.responses.user                     import UserResponseModel
-from api.requests.user                      import UserRequestModel
+from api.requests.user                      import *
 
 logger = logging.getLogger("ByteBurgers")
 
@@ -36,7 +36,7 @@ class UserService:
         return result
 
     def read(self, id: int) -> UserResponseModel:
-        logger.debug("Read User service")
+        logger.debug(f"Read User service {id}")
         
         repository  = UserRepository()
         
@@ -46,13 +46,13 @@ class UserService:
         
         return result
     
-    def update(self, id: int, user: UserRequestModel) -> UserResponseModel:
+    def update(self, id: int, user: UserUpdateRequestModel) -> UserResponseModel:
         logger.debug("Update User service")
         
         repository = UserRepository()
         
         try:
-            updateUser  = UserDBModel(id = id, **user.model_dump())
+            updateUser  = UserDBModel(id = id, **user.model_dump(exclude_unset=True))
             result      = repository.update(updateUser)
         except Exception as e:
             logger.error(f"Error updating user failed - {e}")

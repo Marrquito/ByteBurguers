@@ -2,7 +2,7 @@ from fastapi    import APIRouter, HTTPException, Response, status
 from typing     import List
 
 from api.responses.user      import UserResponseModel
-from api.requests.user       import UserRequestModel
+from api.requests.user       import *
 from api.controllers.user   import UserController
 
 from datetime import datetime
@@ -23,6 +23,14 @@ def userList(name: str = None) -> List[UserResponseModel]:
         return []
     
     return users
+
+@router.post("/", response_model=UserResponseModel, status_code=status.HTTP_201_CREATED)
+def userCreate(user: UserRequestModel) -> UserResponseModel:
+    controller  = UserController()
+    
+    newUser     = controller.createUser(user)
+    
+    return newUser
 
 @router.get("/count", response_model=int, status_code=status.HTTP_200_OK)
 def userCount() -> int:
@@ -60,14 +68,6 @@ def userReport() -> List[UserResponseModel]:
 
     return users
 
-@router.post("/", response_model=UserResponseModel, status_code=status.HTTP_201_CREATED)
-def userCreate(user: UserRequestModel) -> UserResponseModel:
-    controller  = UserController()
-    
-    newUser     = controller.createUser(user)
-    
-    return newUser
-
 @router.get("/{id}", response_model=UserResponseModel, status_code=status.HTTP_200_OK)
 def userRead(id: int) -> UserResponseModel:
     controller  = UserController()
@@ -82,7 +82,7 @@ def userRead(id: int) -> UserResponseModel:
     return user
 
 @router.put("/{id}", response_model=UserResponseModel, status_code=status.HTTP_200_OK)
-def userUpdate(id: int, user: UserRequestModel) -> UserResponseModel:
+def userUpdate(id: int, user: UserUpdateRequestModel) -> UserResponseModel:
     controller  = UserController()
     
     updateUser  = controller.updateUser(id, user)
@@ -93,8 +93,6 @@ def userUpdate(id: int, user: UserRequestModel) -> UserResponseModel:
         )
     
     return updateUser
-
-
 
 @router.delete("/{id}", status_code=status.HTTP_200_OK)
 def userDelete(id: int):
