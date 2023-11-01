@@ -1,5 +1,5 @@
 from typing import List
-#from item_pedido import ItemPedidoDBModel
+from database.models.item_pedido import ItemPedidoDBModel
 
 from database.database import Base
 from sqlalchemy import ForeignKey, Integer

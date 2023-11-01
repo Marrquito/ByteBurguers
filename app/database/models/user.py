@@ -1,8 +1,7 @@
 from typing import List
-#from pedido import PedidoDBModel
+from database.models.pedido import PedidoDBModel
 
 from database.database import Base
-from sqlalchemy import ForeignKey, Integer
 from sqlalchemy.orm import Mapped, mapped_column, DeclarativeBase, relationship
 
 class UserDBModel(Base):
