@@ -1,19 +1,17 @@
 from typing import List
-#from pedido import PedidoDBModel
 
 from database.database import Base
+#from pedido import PedidoDBModel
 from sqlalchemy import ForeignKey, Integer
 from sqlalchemy.orm import Mapped, mapped_column, DeclarativeBase, relationship
 
-class UserDBModel(Base):
-    __tablename__       = "user"
-    
+class MesaDBModel(Base):
+    __tablename__       = "mesa"
+
     id                  : Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    name                : Mapped[str]
-    last_name           : Mapped[str]
-    email               : Mapped[str]
-    phone               : Mapped[str]
+    qntd_assentos       : Mapped[int] = mapped_column()
+    status              : Mapped[bool] = mapped_column()
     pedido              : Mapped[List["PedidoDBModel"]] = relationship()
-    
+
     def __repr__(self) -> str:
-        return f"User [name={self.name}, last_name={self.last_name}]"
+        return f"Mesa [numero={self.id}, status={self.status}, assentos={self.qntd_assentos}]"

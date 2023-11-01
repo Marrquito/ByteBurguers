@@ -1,5 +1,9 @@
+from typing import List
+#from item_pedido import ItemPedidoDBModel
+
 from database.database import Base
-from sqlalchemy.orm    import Mapped, mapped_column
+from sqlalchemy import ForeignKey, Integer
+from sqlalchemy.orm import Mapped, mapped_column, DeclarativeBase, relationship
 
 class CardapioDBModel(Base):
     __tablename__       = "cardapio"
@@ -8,6 +12,7 @@ class CardapioDBModel(Base):
     name                : Mapped[str]
     description         : Mapped[str]
     price               : Mapped[float]
+    item_pedido         : Mapped[List["ItemPedidoDBModel"]] = relationship()
     
     def __repr__(self) -> str:
-        return f"Cardapio [name={self.name}, last_name={self.last_name}]"
+        return f"Cardapio [id={self.id}, nome={self.name}]"
