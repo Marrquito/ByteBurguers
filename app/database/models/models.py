@@ -15,9 +15,8 @@ class UserDBModel(Base):
     phone               : Mapped[str]
     city                : Mapped[str]
     watch_on            : Mapped[bool]              = mapped_column(default=False)   
-    is_flamengo         : Mapped[bool]              = mapped_column(default=False)   
-    
-    orders = relationship("OrderDBModel", back_populates="user")
+    is_flamengo         : Mapped[bool]              = mapped_column(default=False) 
+    orders              : Mapped["OrderDBModel"]    = relationship("OrderDBModel", back_populates="user")
 
     def __repr__(self) -> str:
         return f"User [name={self.name}, last_name={self.last_name}]"
@@ -43,8 +42,8 @@ class OrderDBModel(Base):
     user_id             : Mapped[int]                           = mapped_column(ForeignKey("user.id"))
     user                : Mapped["UserDBModel"]                 = relationship("UserDBModel", back_populates="orders")
     table_id            : Mapped[int]                           = mapped_column(ForeignKey("table.id"))
-    table               : Mapped["TableDBModel"]                = relationship("TableDBModel", back_populates="order")
-    items_ordered       : Mapped[List["ItemOrderedDBModel"]]    = relationship("ItemsOrderedDBModel", back_populates="order")
+    table               : Mapped["TableDBModel"]                = relationship("TableDBModel", back_populates="orders")
+    items_ordered       : Mapped[List["ItemOrderedDBModel"]]    = relationship("ItemOrderedDBModel", back_populates="order")
     
     def __repr__(self) -> str:
         return f"Order [id={self.id}, mesa={self.mesa_id}"
