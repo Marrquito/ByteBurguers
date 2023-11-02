@@ -13,7 +13,7 @@ router = APIRouter()
 
 logger          = logging.getLogger("ByteBurgers")
 
-@router.get("/read_all", response_model=List[UserResponseModel], status_code=status.HTTP_200_OK)
+@router.get("/list", response_model=List[UserResponseModel], status_code=status.HTTP_200_OK)
 def userList(name: str = None) -> List[UserResponseModel]:
     controller  = UserController()
 
