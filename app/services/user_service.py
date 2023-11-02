@@ -1,6 +1,6 @@
 import logging
 
-from database.models.user                   import UserDBModel
+from database.models.models                 import UserDBModel
 from database.repositories.user_repository  import UserRepository
 from api.responses.user                     import UserResponseModel
 from api.requests.user                      import *

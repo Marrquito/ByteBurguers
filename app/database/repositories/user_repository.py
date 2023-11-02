@@ -1,10 +1,9 @@
 import logging
 
-from sqlalchemy.sql import Select
 from sqlalchemy.orm import Session
 
 from database.dependencies  import get_db
-from database.models.user   import UserDBModel
+from database.models.models import UserDBModel
 from api.responses.user     import UserResponseModel
 from api.requests.user      import UserRequestModel
 
