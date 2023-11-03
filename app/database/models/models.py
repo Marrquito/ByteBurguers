@@ -54,7 +54,7 @@ class MenuDBModel(Base):
     id                  : Mapped[int]                   = mapped_column(primary_key=True, autoincrement=True)
     name                : Mapped[str]
     description         : Mapped[str]
-    fabrication_place   : Mapped[int]
+    fabrication_place   : Mapped[str]
     cost                : Mapped[float]
     item_ordered        : Mapped["ItemOrderedDBModel"]  = relationship("ItemOrderedDBModel", back_populates="menu")
     
