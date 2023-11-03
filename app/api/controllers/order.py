@@ -3,6 +3,7 @@ import psycopg2
 
 from api.requests.order import *
 from api.responses.order import *
+from api.controllers.table import *
 
 from datetime import datetime
 
@@ -86,6 +87,16 @@ class OrderController:
         cursor = connection.cursor()
 
         try:
+            select_query = "SELECT busy FROM \"table\" WHERE id = %s"
+            cursor.execute(select_query, (str(order.table_id)))
+
+            result = cursor.fetchone()
+
+            if result[0] is True:
+                return False
+
+            TableController().update(order.table_id, TableUpdateRequestModel(busy=True))
+
             update_query = "UPDATE \"order\" SET"
             params = []
 
@@ -169,10 +180,11 @@ class OrderController:
             close_order = "SELECT * FROM \"order\" WHERE id = %s"
             cursor.execute(close_order, (str(id)))
 
+
             result = cursor.fetchone()
 
-            print(result)
-
+            TableController().update(result[5], TableUpdateRequestModel(busy=False))
+ 
             if result is None:
                 return None
             

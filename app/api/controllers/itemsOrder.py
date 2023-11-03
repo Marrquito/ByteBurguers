@@ -2,6 +2,7 @@ import logging
 import psycopg2
 
 from api.requests.itemsOrder import *
+from api.requests.menu import *
 from api.responses.itemsOrder import *
 from api.controllers.menu import *
 
@@ -31,10 +32,12 @@ class ItemsOrderController:
             cursor.execute(select_query, (str(itemsOrder.menu_id)))
 
             result = cursor.fetchone()
-            if result < itemsOrder.qtd:
+
+            if result[0] < itemsOrder.qtd:
                 return False
             
-            MenuController().update(itemsOrder.menu_id, MenuUpdateRequestModel(qntd = result[0] - itemsOrder.qtd))
+            menu = MenuController()
+            menu.update(itemsOrder.menu_id, MenuUpdateRequestModel(qntd = result[0] - itemsOrder.qtd))
 
             select_query = "SELECT cost FROM menu WHERE id = %s"
             cursor.execute(select_query, (str(itemsOrder.menu_id)))
