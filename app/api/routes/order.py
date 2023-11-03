@@ -65,7 +65,7 @@ def orderDelete(id:int):
     
     return deleteOrderEntry
 
-@router.put("/close_order/{id}", response_model=bool, status_code=status.HTTP_200_OK)
+@router.put("/close_order/{id}", response_model=OrderResponseModel, status_code=status.HTTP_200_OK)
 def orderClose(id:int, order: OrderUpdateRequestModel):
     controller  = OrderController()
     

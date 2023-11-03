@@ -63,6 +63,9 @@ class MenuController:
             if menu.fabrication_place is not None:
                 update_query += " fabrication_place = %s,"
                 params.append(menu.fabrication_place)
+            if menu.qntd is not None:
+                update_query += " qntd = %s,"
+                params.append(menu.qntd)
 
             update_query = update_query.rstrip(',') + " WHERE id = %s;"
             params.append(id)
@@ -102,6 +105,7 @@ class MenuController:
                 "description": menu[2],
                 "cost": menu[3],
                 "fabrication_place": menu[4],
+                "qntd": menu[5]
             }
 
             menu = MenuResponseModel(**menu)

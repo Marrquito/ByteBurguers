@@ -3,6 +3,7 @@ import psycopg2
 
 from api.requests.itemsOrder import *
 from api.responses.itemsOrder import *
+from api.controllers.menu import *
 
 from datetime import datetime
 
@@ -26,6 +27,15 @@ class ItemsOrderController:
         cursor = connection.cursor()
 
         try:
+            select_query = "SELECT qntd FROM menu WHERE id = %s"
+            cursor.execute(select_query, (str(itemsOrder.menu_id)))
+
+            result = cursor.fetchone()
+            if result < itemsOrder.qtd:
+                return False
+            
+            MenuController().update(itemsOrder.menu_id, MenuUpdateRequestModel(qntd = result[0] - itemsOrder.qtd))
+
             select_query = "SELECT cost FROM menu WHERE id = %s"
             cursor.execute(select_query, (str(itemsOrder.menu_id)))
 

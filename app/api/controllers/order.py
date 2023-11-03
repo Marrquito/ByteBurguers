@@ -166,6 +166,25 @@ class OrderController:
             update_query = "UPDATE \"order\" SET time = %s, total =%s, payment_method = %s WHERE id = %s"
             cursor.execute(update_query, (datetime.now(tz=None), total, order.payment_method, str(id)))
 
+            close_order = "SELECT * FROM \"order\" WHERE id = %s"
+            cursor.execute(close_order, (str(id)))
+
+            result = cursor.fetchone()
+
+            print(result)
+
+            if result is None:
+                return None
+            
+            response = OrderResponseModel(
+                id = result[0],
+                date = result[1],
+                total = result[2],
+                payment_method = result[3],
+                user_id = result[4],
+                table_id = result[5]
+            )
+
             connection.commit()
 
         except Exception as e:
@@ -173,8 +192,8 @@ class OrderController:
         
             connection.close()
             
-            return False
+            return None
         
         connection.close()
         
-        return True
+        return response

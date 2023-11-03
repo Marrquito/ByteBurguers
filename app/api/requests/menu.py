@@ -6,6 +6,7 @@ class MenuRequestModel(BaseModel):
     description : str
     cost        : float
     fabrication_place : str
+    qntd       : int
 
     class Config:
         from_attributes = True
@@ -15,6 +16,7 @@ class MenuUpdateRequestModel(BaseModel):
     description : Optional[str]      = None
     cost        : Optional[float]    = None
     fabrication_place : Optional[str] = None
+    qntd        : Optional[int]      = None
 
     class Config:
         from_attributes = True

@@ -56,6 +56,7 @@ class MenuDBModel(Base):
     description         : Mapped[str]
     fabrication_place   : Mapped[str]
     cost                : Mapped[float]
+    qntd                : Mapped[int]
     item_ordered        : Mapped["ItemOrderedDBModel"]  = relationship("ItemOrderedDBModel", back_populates="menu")
     
     def __repr__(self) -> str:
@@ -64,12 +65,12 @@ class MenuDBModel(Base):
 class ItemOrderedDBModel(Base):
     __tablename__       = "itemsOrdered"
 
-    #id              : Mapped[int]               = mapped_column(primary_key=True, autoincrement=True)
-    #qtd             : Mapped[int]
-    #total_price     : Mapped[float]
-    order_id        : Mapped[int]               = mapped_column(ForeignKey("order.id"), primary_key=True)
+    id              : Mapped[int]               = mapped_column(primary_key=True, autoincrement=True)
+    qtd             : Mapped[int]
+    total_price     : Mapped[float]
+    order_id        : Mapped[int]               = mapped_column(ForeignKey("order.id"))
     order           : Mapped["OrderDBModel"]    = relationship("OrderDBModel", back_populates="items_ordered")
-    menu_id         : Mapped[int]               = mapped_column(ForeignKey("menu.id"), primary_key=True)
+    menu_id         : Mapped[int]               = mapped_column(ForeignKey("menu.id"))
     menu            : Mapped["MenuDBModel"]     = relationship("MenuDBModel", back_populates="item_ordered")
 
     def __repr__(self) -> str:

@@ -6,6 +6,7 @@ class MenuResponseModel(BaseModel):
     description         : str
     cost                : float
     fabrication_place   : str
+    qntd                : int
 
     class Config:
         from_attributes = True
