@@ -4,7 +4,7 @@ from datetime   import datetime
 
 class OrderRequestModel(BaseModel):
     total  : float = 0.0
-    payment_method : str
+    payment_method : str = "not_payed_yet"
     user_id : int
     table_id: int
 

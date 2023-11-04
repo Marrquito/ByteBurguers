@@ -26,11 +26,21 @@ class OrderController:
         connection = psycopg2.connect(**db_config)
         cursor = connection.cursor()
 
+        select_query = "SELECT id FROM open_tables WHERE id = %s"
+        cursor.execute(select_query, (str(order.table_id)))
+
+        result = cursor.fetchone()
+
+        if result is None:
+            return False
+
         try:
             insert_query = "INSERT INTO \"order\" (user_id, table_id, total, time, payment_method) VALUES (%s, %s, %s, %s, %s)"
             data = (order.user_id, order.table_id, order.total, datetime.now(tz=None) , order.payment_method)
 
             cursor.execute(insert_query, data)
+
+            TableController().update(order.table_id, TableUpdateRequestModel(busy=True))
 
             connection.commit()
 
@@ -165,7 +175,7 @@ class OrderController:
         cursor = connection.cursor()
 
         try:
-            select_query = "SELECT * FROM \"itemsOrdered\" WHERE order_id = %s"
+            '''select_query = "SELECT * FROM \"itemsOrdered\" WHERE order_id = %s"
             cursor.execute(select_query, (str(id)))
             full_order = cursor.fetchall()
 
@@ -173,13 +183,11 @@ class OrderController:
             for item in full_order:
                 total += item[2]
 
-
             update_query = "UPDATE \"order\" SET time = %s, total =%s, payment_method = %s WHERE id = %s"
             cursor.execute(update_query, (datetime.now(tz=None), total, order.payment_method, str(id)))
 
             close_order = "SELECT * FROM \"order\" WHERE id = %s"
             cursor.execute(close_order, (str(id)))
-
 
             result = cursor.fetchone()
 
@@ -195,6 +203,21 @@ class OrderController:
                 payment_method = result[3],
                 user_id = result[4],
                 table_id = result[5]
+            )
+
+            connection.commit()'''
+
+            cursor.execute("SELECT * FROM close_order(%s,%s,%s)", (str(id), datetime.now(), order.payment_method))
+
+            result = cursor.fetchall()
+
+            response = OrderResponseModel(
+                id = result[0][0],
+                date = result[0][1],
+                total = result[0][2],
+                payment_method = result[0][3],
+                user_id = result[0][4],
+                table_id = result[0][5]
             )
 
             connection.commit()
