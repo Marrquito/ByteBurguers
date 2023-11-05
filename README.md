@@ -15,3 +15,6 @@ apos isso repetimos esse processo de cadastro de itens pedidos ate a hora de fec
 ao fechar a conta passamos o id do pedido e o metodo de pagamento como "cartao, dinheiro, berry, etc" e ele vai calcular o valor total da conta e liberar a mesa atrelada ao pedido
 dando o desconto de 20% se o cliente torcer flamengo ou assistir one_piece
 alem de retornar todos os dados daquele pedido
+
+adicionado consulta por faixa de preço, nome, local de fabricaçao, e mostrar todos que o estoque esta baixo
+cliente pode ver seus dados como ja estava feito antes e agora pode pesquisar os seus pedidos totais pelo id

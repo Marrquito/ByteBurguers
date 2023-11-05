@@ -50,6 +50,72 @@ def menuRead(id:int):
         )
     
     return getMenuEntry
+
+@router.get("/read_all", response_model=List[MenuResponseModel], status_code=status.HTTP_200_OK)
+def menuReadAll():
+    controller  = MenuController()
+    
+    getMenuEntries = controller.read_all()
+
+    if not getMenuEntries:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Menu entries not found"
+        )
+    
+    return getMenuEntries
+
+@router.get("/read_by_name", response_model=MenuResponseModel, status_code=status.HTTP_200_OK)
+def menuReadByName(name:str):
+    controller  = MenuController()
+    
+    getMenuEntries = controller.read_with_name(name)
+
+    if not getMenuEntries:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Menu entries not found"
+        )
+    
+    return getMenuEntries
+
+@router.get("/read_by_fabrication_place", response_model=List[MenuResponseModel], status_code=status.HTTP_200_OK)
+def menuReadByFabricationPlace(fabrication_place:str):
+    controller  = MenuController()
+    
+    getMenuEntries = controller.read_by_fabrication_place(fabrication_place)
+
+    if not getMenuEntries:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Menu entries not found"
+        )
+    
+    return getMenuEntries
+
+@router.get("/low_stock", response_model=List[MenuResponseModel], status_code=status.HTTP_200_OK)
+def menuReadLowStock():
+    controller  = MenuController()
+    
+    getMenuEntries = controller.read_low_stock()
+
+    if not getMenuEntries:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Menu entries not found"
+        )
+    
+    return getMenuEntries
+
+@router.get("/read_by_cost", response_model=List[MenuResponseModel], status_code=status.HTTP_200_OK)
+def menuReadByCost(minCost:float, maxCost:float):
+    controller  = MenuController()
+    
+    getMenuEntries = controller.read_by_price_range(minCost, maxCost)
+
+    if not getMenuEntries:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Menu entries not found"
+        )
+    
+    return getMenuEntries
+
 @router.delete("/delete/{id}", response_model=bool, status_code=status.HTTP_200_OK)
 def menuDelete(id:int):
     controller  = MenuController()

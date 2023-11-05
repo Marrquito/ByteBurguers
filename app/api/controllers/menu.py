@@ -121,6 +121,189 @@ class MenuController:
         
         return menu
     
+    def read_all(self):
+        logger.debug("Read all Menu entry service")
+        connection = psycopg2.connect(**db_config)
+        cursor = connection.cursor()
+
+        try:
+
+            select_query = "SELECT * FROM menu WHERE qntd > 0;"
+            cursor.execute(select_query)
+
+            menus = cursor.fetchall()
+
+            if menus is None:
+                return None
+
+            menus = [{
+                "id": menu[0],
+                "name": menu[1],
+                "description": menu[2],
+                "cost": menu[3],
+                "fabrication_place": menu[4],
+                "qntd": menu[5]
+            } for menu in menus]
+
+            menus = [MenuResponseModel(**menu) for menu in menus]
+
+        except Exception as e:
+            logger.error(f"Error reading menu entry - {e}")
+        
+            connection.close()
+            
+            return None
+        
+        connection.close()
+        
+        return menus
+    
+    def read_with_name(self, name:str):
+        logger.debug("Read Menu entry service")
+        connection = psycopg2.connect(**db_config)
+        cursor = connection.cursor()
+
+        try:
+            select_query = "SELECT * FROM menu WHERE name = %s;"
+            cursor.execute(select_query, (name,))
+
+            menu = cursor.fetchone()
+
+            if menu is None:
+                return None
+
+            print(menu)
+
+            menu = {
+                "id": menu[0],
+                "name": menu[1],
+                "description": menu[2],
+                "cost": menu[3],
+                "fabrication_place": menu[4],
+                "qntd": menu[5]
+            }
+
+            menu = MenuResponseModel(**menu)
+
+        except Exception as e:
+            logger.error(f"Error reading menu entry - {e}")
+        
+            connection.close()
+            
+            return None
+        
+        connection.close()
+        
+        return menu
+    
+    def read_by_price_range(self, min_price:float, max_price:float):
+        logger.debug("Read Menu entry service")
+        connection = psycopg2.connect(**db_config)
+        cursor = connection.cursor()
+
+        try:
+            select_query = "SELECT * FROM menu WHERE cost BETWEEN %s AND %s;"
+            cursor.execute(select_query, (min_price, max_price))
+
+            menus = cursor.fetchall()
+
+            if menus is None:
+                return None
+
+            menus = [{
+                "id": menu[0],
+                "name": menu[1],
+                "description": menu[2],
+                "cost": menu[3],
+                "fabrication_place": menu[4],
+                "qntd": menu[5]
+            } for menu in menus]
+
+            menus = [MenuResponseModel(**menu) for menu in menus]
+
+        except Exception as e:
+            logger.error(f"Error reading menu entry - {e}")
+        
+            connection.close()
+            
+            return None
+        
+        connection.close()
+        
+        return menus
+    
+    def read_low_stock(self):
+        logger.debug("Read Menu entry service")
+        connection = psycopg2.connect(**db_config)
+        cursor = connection.cursor()
+
+        try:
+            select_query = "SELECT * FROM menu WHERE qntd < 5;"
+            cursor.execute(select_query)
+
+            menus = cursor.fetchall()
+
+            if menus is None:
+                return None
+
+            menus = [{
+                "id": menu[0],
+                "name": menu[1],
+                "description": menu[2],
+                "cost": menu[3],
+                "fabrication_place": menu[4],
+                "qntd": menu[5]
+            } for menu in menus]
+
+            menus = [MenuResponseModel(**menu) for menu in menus]
+
+        except Exception as e:
+            logger.error(f"Error reading menu entry - {e}")
+        
+            connection.close()
+            
+            return None
+        
+        connection.close()
+        
+        return menus
+    
+    def read_by_fabrication_place(self, fabrication_place:str):
+        logger.debug("Read Menu entry service")
+        connection = psycopg2.connect(**db_config)
+        cursor = connection.cursor()
+
+        try:
+            select_query = "SELECT * FROM menu WHERE fabrication_place = %s;"
+            cursor.execute(select_query, (fabrication_place,))
+
+            menus = cursor.fetchall()
+
+            if menus is None:
+                return None
+
+            menus = [{
+                "id": menu[0],
+                "name": menu[1],
+                "description": menu[2],
+                "cost": menu[3],
+                "fabrication_place": menu[4],
+                "qntd": menu[5]
+            } for menu in menus]
+
+            menus = [MenuResponseModel(**menu) for menu in menus]
+
+        except Exception as e:
+            logger.error(f"Error reading menu entry - {e}")
+        
+            connection.close()
+            
+            return None
+        
+        connection.close()
+        
+        return menus
+
     def delete(self, id: int):
         logger.debug("Delete Menu entry service")
         connection = psycopg2.connect(**db_config)

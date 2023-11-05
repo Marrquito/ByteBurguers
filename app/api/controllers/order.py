@@ -207,6 +207,13 @@ class OrderController:
 
             connection.commit()'''
 
+            query = "SELECT payment_method FROM order WHERE id = %s" 
+            cursor.execute(query, (str(id)))
+            result = cursor.fetchone()
+
+            if result[0] is not "not_payed_yet":
+                return None 
+
             cursor.execute("SELECT * FROM close_order(%s,%s,%s)", (str(id), datetime.now(), order.payment_method))
 
             result = cursor.fetchall()
@@ -232,3 +239,40 @@ class OrderController:
         connection.close()
         
         return response
+    
+    def read_client(self, id: int):
+        logger.debug("Read Order entry service")
+        connection = psycopg2.connect(**db_config)
+
+        try:
+            cursor = connection.cursor()
+            select_query = "SELECT * FROM \"order\" WHERE user_id = %s"
+            cursor.execute(select_query, (str(id)))
+
+            result = cursor.fetchall()
+
+            if result is None:
+                return None
+
+            orders = []
+
+            for order in result:
+                orders.append(OrderResponseModel(
+                    id = order[0],
+                    date = order[1],
+                    total = order[2],
+                    payment_method = order[3],
+                    user_id = order[4],
+                    table_id = order[5]
+                ))
+
+        except Exception as e:
+            logger.error(f"Error reading order entry - {e}")
+        
+            connection.close()
+            
+            return None
+        
+        connection.close()
+
+        return orders

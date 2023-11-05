@@ -39,6 +39,19 @@ def orderRead(id:int):
     
     return getOrderEntry
 
+@router.get("/get_client_order/{id}", response_model=List[OrderResponseModel], status_code=status.HTTP_200_OK)
+def orderReadClient(id:int):
+    controller  = OrderController()
+    
+    getOrderEntry = controller.read_client(id)
+
+    if not getOrderEntry:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Order entry not found"
+        )
+    
+    return getOrderEntry
+
 @router.put("/update/{id}", response_model=bool, status_code=status.HTTP_200_OK)
 def orderUpdate(id:int, order: OrderUpdateRequestModel):
     controller  = OrderController()

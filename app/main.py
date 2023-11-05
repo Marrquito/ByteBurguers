@@ -14,7 +14,7 @@ logger      = logging.getLogger("ByteBurgers")
 #Configure log system:
 if PRINT_LOG == "TERMINAL":
     log_handler = logging.StreamHandler()
-    logger.setLevel(logging.INFO)
+    logger.setLevel(logging.DEBUG)
 
     class CustomJsonFormatter(jsonlogger.JsonFormatter):
         def add_fields(self, log_record, record, message_dict):
