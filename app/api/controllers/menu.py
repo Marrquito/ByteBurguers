@@ -24,8 +24,8 @@ class MenuController:
         cursor = connection.cursor()
 
         try:
-            insert_query = "INSERT INTO menu (name, cost, description, fabrication_place) VALUES (%s, %s, %s, %s)"
-            data = (menu.name, menu.cost, menu.description, menu.fabrication_place)
+            insert_query = "INSERT INTO menu (name, cost, description, fabrication_place, qntd) VALUES (%s, %s, %s, %s, %s)"
+            data = (menu.name, menu.cost, menu.description, menu.fabrication_place, menu.qntd)
 
             cursor.execute(insert_query, data)
 
@@ -91,7 +91,7 @@ class MenuController:
         cursor = connection.cursor()
 
         try:
-            select_query = "SELECT * FROM menu WHERE id = %s;"
+            select_query = "SELECT * FROM menu WHERE id = %s and qntd>-1;"
             cursor.execute(select_query, (str(id)))
 
             menu = cursor.fetchone()
@@ -128,7 +128,7 @@ class MenuController:
 
         try:
 
-            select_query = "SELECT * FROM menu WHERE qntd > 0;"
+            select_query = "SELECT * FROM menu WHERE qntd > -1;"
             cursor.execute(select_query)
 
             menus = cursor.fetchall()
@@ -164,7 +164,7 @@ class MenuController:
         cursor = connection.cursor()
 
         try:
-            select_query = "SELECT * FROM menu WHERE name = %s;"
+            select_query = "SELECT * FROM menu WHERE name = %s and qntd > -1;"
             cursor.execute(select_query, (name,))
 
             menu = cursor.fetchone()
@@ -202,7 +202,7 @@ class MenuController:
         cursor = connection.cursor()
 
         try:
-            select_query = "SELECT * FROM menu WHERE cost BETWEEN %s AND %s;"
+            select_query = "SELECT * FROM menu WHERE qntd > -1 and cost BETWEEN %s AND %s;"
             cursor.execute(select_query, (min_price, max_price))
 
             menus = cursor.fetchall()
@@ -238,7 +238,7 @@ class MenuController:
         cursor = connection.cursor()
 
         try:
-            select_query = "SELECT * FROM menu WHERE qntd < 5;"
+            select_query = "SELECT * FROM menu WHERE qntd < 5 and qntd > -1;"
             cursor.execute(select_query)
 
             menus = cursor.fetchall()
@@ -274,7 +274,7 @@ class MenuController:
         cursor = connection.cursor()
 
         try:
-            select_query = "SELECT * FROM menu WHERE fabrication_place = %s;"
+            select_query = "SELECT * FROM menu WHERE fabrication_place = %s and qntd>-1;"
             cursor.execute(select_query, (fabrication_place,))
 
             menus = cursor.fetchall()
