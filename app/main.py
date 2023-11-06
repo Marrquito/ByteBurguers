@@ -8,6 +8,8 @@ from fastapi            import FastAPI
 from config             import *
 from router             import router
 
+from fastapi.middleware.cors import CORSMiddleware
+
 directory   = os.path.dirname(__file__)
 logger      = logging.getLogger("ByteBurgers")
 
@@ -37,6 +39,14 @@ else:
     logger.addHandler(handler)
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=CORS_ORIGINS,
+    allow_credentials=True,
+    allow_methods=CORS_METHODS,
+    allow_headers=CORS_HEADERS,
+)
 
 @app.on_event("startup")
 async def startup_event():
