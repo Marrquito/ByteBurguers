@@ -207,11 +207,11 @@ class OrderController:
 
             connection.commit()'''
 
-            query = "SELECT payment_method FROM order WHERE id = %s" 
+            query = "SELECT payment_method FROM \"order\" WHERE id = %s" 
             cursor.execute(query, (str(id)))
             result = cursor.fetchone()
 
-            if result[0] is not "not_payed_yet":
+            if result[0] != "not_payed_yet":
                 return None 
 
             cursor.execute("SELECT * FROM close_order(%s,%s,%s)", (str(id), datetime.now(), order.payment_method))
